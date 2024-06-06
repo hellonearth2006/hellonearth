@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Data Collection</title>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGfy09vOLx_26Acn-RxSs7Z6syeFI47vQ",
+            authDomain: "hellonearth-8a0ac.firebaseapp.com",
+            projectId: "hellonearth-8a0ac",
+            storageBucket: "hellonearth-8a0ac.appspot.com",
+            messagingSenderId: "1088784322713",
+            appId: "1:1088784322713:web:28e49d2287422fb2f9a808",
+            measurementId: "G-KW8CMJQQGH"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        console.log("Firebase initialized");
+
+        // Function to get visitor's IP address and location
+        async function collectAndSendData() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                const data = await response.json();
+                console.log('IP Address:', data.ip);
+
+                const geoResponse = await fetch(`https://ipapi.co/${data.ip}/json/`);
+                if (!geoResponse.ok) {
+                    throw new Error('Network response was not ok ' + geoResponse.statusText);
+                }
+                const geoData = await geoResponse.json();
+                console.log('Geolocation:', geoData);
+
+                const userInfo = {
+                    ip: data.ip,
+                    geolocation: geoData.city + ', ' + geoData.region + ', ' + geoData.country_name,
+                    date: new Date().toISOString().split('T')[0],
+                    time: new Date().toISOString().split('T')[1].substring(0, 8)
+                };
+                console.log('User Info:', userInfo);
+
+                // Add data to Firestore
+                const docRef = await addDoc(collection(db, "visitorData"), userInfo);
+                console.log("Document written with ID: ", docRef.id);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+
+        window.onload = collectAndSendData;
+    </script>
+</head>
+<body>
+    <h1>Welcome to our Website!</h1>
+    <p>Thank you for visiting.</p>
+</body>
+</html>
