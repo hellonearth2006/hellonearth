@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visitor Data Collection</title>
+    <title>k6tii lore</title>
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -28,25 +28,32 @@
 
         console.log("Firebase initialized");
 
-        // Function to get visitor's IP address and location
+        // Function to get visitor's IP address and location with retry mechanism
+        async function fetchWithRetry(url, retries = 3) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url);
+                    if (response.ok) {
+                        return await response.json();
+                    }
+                    throw new Error('Network response was not ok ' + response.statusText);
+                } catch (error) {
+                    console.error(`Attempt ${i + 1} failed: ${error}`);
+                    if (i === retries - 1) throw error;
+                }
+            }
+        }
+
         async function collectAndSendData() {
             try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                const data = await response.json();
-                console.log('IP Address:', data.ip);
+                const ipData = await fetchWithRetry('https://api.ipify.org?format=json');
+                console.log('IP Address:', ipData.ip);
 
-                const geoResponse = await fetch(`https://ipapi.co/${data.ip}/json/`);
-                if (!geoResponse.ok) {
-                    throw new Error('Network response was not ok ' + geoResponse.statusText);
-                }
-                const geoData = await geoResponse.json();
+                const geoData = await fetchWithRetry(`https://ipapi.co/${ipData.ip}/json/`);
                 console.log('Geolocation:', geoData);
 
                 const userInfo = {
-                    ip: data.ip,
+                    ip: ipData.ip,
                     geolocation: geoData.city + ', ' + geoData.region + ', ' + geoData.country_name,
                     date: new Date().toISOString().split('T')[0],
                     time: new Date().toISOString().split('T')[1].substring(0, 8)
