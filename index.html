@@ -56,7 +56,12 @@
                     ip: ipData.ip,
                     geolocation: geoData.city + ', ' + geoData.region + ', ' + geoData.country_name,
                     date: new Date().toISOString().split('T')[0],
-                    time: new Date().toISOString().split('T')[1].substring(0, 8)
+                    time: new Date().toISOString().split('T')[1].substring(0, 8),
+                    userAgent: navigator.userAgent,
+                    latitude: geoData.latitude,
+                    longitude: geoData.longitude,
+                    city: geoData.city,
+                    device: navigator.platform
                 };
                 console.log('User Info:', userInfo);
 
